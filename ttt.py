@@ -8,6 +8,10 @@ class Board(object):
         self.val = 0
         self.children = []
 
+    def play(self, x, y, sym):
+        print('setting at %d and %d' % (x, y))
+        self.board[y][x] = sym
+
     def __lt__(self, other):
         return self.val < other.val
 
@@ -28,22 +32,10 @@ class Board(object):
 
     def __str__(self):
         res = ''
-        for row in self.board:
-            res += str(row) + '\n'
+        print('  ' + str(['0', '1', '2']))
+        for index, row in enumerate(self.board):
+            res += str(index) + ' ' + str(row) + '\n'
         return res
-
-
-board = [
-    [' ', ' ', ' '],
-    [' ', ' ', ' '],
-    [' ', ' ', ' ']
-]
-
-
-def print_board(board):
-    for row in board:
-        print(row)
-    print('')
 
 
 def game_over(board):
@@ -120,9 +112,37 @@ def print_optimal_path(board):
         print_optimal_path(best)
 
 
-print_board(board)
-b = Board(board)
-root = build_game_tree(1, b)
-# print(root.val)
-print(str(max(root.children)))
-# print_optimal_path(root)
+if __name__ == '__main__':
+    def check_game(board):
+        won, p = game_over(board.board)
+        if won:
+            if p == 0:
+                print('It\'s a tie!')
+            elif p == 1:
+                print('The computer won!')
+            else:
+                print('You won!')
+        return won
+
+    mat_board = [
+        [' ', ' ', ' '],
+        [' ', ' ', ' '],
+        [' ', ' ', ' ']
+    ]
+
+    print('starting game...')
+    while True:
+        b = Board(mat_board)
+        print('first print')
+        print(str(b))
+        if check_game(b):
+            break
+        b = build_game_tree(1, b)
+        b = max(b.children)
+        print(str(b))
+        won, p = game_over(b.board)
+        if check_game(b):
+            break
+        coord = map(int, raw_input('Enter the coordinates of where you\'d like to play\n').split())
+        mat_board = b.board
+        mat_board[coord[1]][coord[0]] = 'O'
