@@ -8,10 +8,6 @@ class Board(object):
         self.val = 0
         self.children = []
 
-    def play(self, x, y, sym):
-        print('setting at %d and %d' % (x, y))
-        self.board[y][x] = sym
-
     def __lt__(self, other):
         return self.val < other.val
 
@@ -83,7 +79,6 @@ def get_all_moves(player, board):
                 cpy_board = copy.deepcopy(board)
                 cpy_board[o_index][i_index] = symbol
                 boards.append(Board(cpy_board))
-                # boards.append(cpy_board)
     return boards
 
 
