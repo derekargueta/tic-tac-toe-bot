@@ -50,7 +50,7 @@ def game_over(board):
                 return True, v
 
             if board[0][index] + board[1][index] + board[2][index] == k:
-                    return True, v
+                return True, v
 
             if index == 0:
                 # check top-left to bottom-right diagonal
@@ -131,6 +131,21 @@ if __name__ == '__main__':
 
     print('starting game...')
     while True:
+        # b = Board(mat_board)
+        # print(str(b))
+        # coord = map(int, raw_input('Enter the coordinates of where you\'d like to play\n').split())
+        # mat_board = b.board
+        # mat_board[coord[1]][coord[0]] = 'X'
+        # b = Board(mat_board)
+        # print(str(b))
+        # if check_game(b):
+        #     break
+        # b = build_game_tree(2, b)
+        # b = max(b.children)
+        # mat_board = b.board
+        # won, p = game_over(b.board)
+        # if check_game(b):
+        #     break
         b = Board(mat_board)
         print(str(b))
         if check_game(b):
