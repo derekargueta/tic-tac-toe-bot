@@ -35,34 +35,38 @@ class Board(object):
 
 
 def game_over(board):
+
+    winning = {
+        'XXX': 1,
+        'OOO': -1
+    }
+
     # check for player 1 winning
     for index, row in enumerate(board):
-        if ''.join(row) == 'XXX':
-            return True, 1
-        if index == 0:
-            if row[0] + board[1][0] + board[2][0] == 'XXX':
-                return True, 1
-            if row[0] + board[1][1] + board[2][2] == 'XXX':
-                return True, 1
-        if index == 2:
-            if row[2] + board[1][1] + board[2][0] == 'XXX':
-                return True, 1
-        if ''.join(row) == 'OOO':
-            return True, -1
-        if index == 0:
-            if row[0] + board[1][0] + board[2][0] == 'OOO':
-                return True, -1
-            if row[0] + board[1][1] + board[2][2] == 'OOO':
-                return True, -1
-        if index == 2:
-            if row[2] + board[1][1] + board[2][0] == 'OOO':
-                return True, -1
+        for k, v in winning.iteritems():
 
-    # check for ties
+            # check horizontal
+            if ''.join(row) == k:
+                return True, v
+
+            if board[0][index] + board[1][index] + board[2][index] == k:
+                    return True, v
+
+            if index == 0:
+                # check top-left to bottom-right diagonal
+                if row[0] + board[1][1] + board[2][2] == k:
+                    return True, v
+                # check top-right to bottom-left diagonal
+                if row[2] + board[1][1] + board[2][0] == k:
+                    return True, v
+
+    # check for a non-complete game
     for row in board:
         for spot in row:
             if spot == ' ':
                 return False, 0
+
+    # all spots are filled, but no one won - so it's a tie
     return True, 0
 
 
@@ -128,7 +132,6 @@ if __name__ == '__main__':
     print('starting game...')
     while True:
         b = Board(mat_board)
-        print('first print')
         print(str(b))
         if check_game(b):
             break
